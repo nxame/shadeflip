@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadeflip settings</title>
+<style>
+  :root { color-scheme: light dark; font: 15px/1.5 system-ui, sans-serif; }
+  body { max-width: 34rem; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.4rem; margin: 0 0 1.5rem; }
+  h2 { font-size: 1rem; margin: 2rem 0 .5rem; }
+  label { display: block; padding: .15rem 0; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: .3rem 0; border-bottom: 1px solid #8884; }
+  td:first-child { word-break: break-all; }
+  td:not(:first-child) { width: 1%; padding-left: .5rem; white-space: nowrap; }
+  input[type=text] { width: 100%; box-sizing: border-box; }
+  input, select, button { font: inherit; }
+  .muted { opacity: .7; font-size: .9rem; }
+  kbd { font: inherit; border: 1px solid #8888; border-radius: 4px; padding: 0 .3rem; }
+</style>
+</head>
+<body>
+<h1>Shadeflip</h1>
+
+<h2>Everywhere else</h2>
+<p class="muted">For sites that aren't in the list below.</p>
+<label><input type="radio" name="mode" value="off"> Off: leave sites as they are</label>
+<label><input type="radio" name="mode" value="dark"> Dark everywhere</label>
+<label><input type="radio" name="mode" value="light"> Light everywhere</label>
+
+<h2>Sites</h2>
+<p class="muted">A site's own choice always wins. Click the toolbar button on a site to add it.</p>
+<table><tbody id="sites"></tbody>
+  <tfoot><tr>
+    <td><input type="text" id="new-host" placeholder="example.com" spellcheck="false"></td>
+    <td><select id="new-want"><option value="dark">Dark</option><option value="light">Light</option><option value="off">Off</option></select></td>
+    <td><button id="add">Add</button></td>
+  </tr></tfoot>
+</table>
+
+<h2>Shortcut</h2>
+<p><kbd id="shortcut">Alt+Shift+D</kbd> flips the current site. <a href="#" id="shortcuts">Change shortcut</a></p>
+<p class="muted" id="shortcut-help" hidden></p>
+
+<script src="options.js"></script>
+</body>
+</html>
