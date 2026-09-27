@@ -12,19 +12,46 @@
   const CACHE = 'c:' + host;  // storage.local: last detected natural look, kept
                               // only for sites with their own setting
 
+  // Private window: flips last for the tab, nothing is saved.
+  const isPrivate = !!api.extension?.inIncognitoContext;
+
   let want = 'off';     // what the user asked for on this site
+  let held = false;     // flipped in a private window: ignore saved settings
   let ownSetting = false; // this site has its own entry, not just the default
   let natural = null;   // how the page looks on its own: "dark" | "light"
   let canvasOnly = false;
   let flipped = false;
 
+  // Flip rules key on a random per-install attribute name and are added only
+  // to flipped pages, so a page can't probe for Shadeflip with a known name.
+  let attr = null;
+  let css = '';         // flip rules: "" | "asked" | "in" | "failed"
+  let standing = false;
   const opposite = (look) => (look === 'dark' ? 'light' : 'dark');
+
+  // Until the rules are in, an inline filter stands in so the page never
+  // shows the wrong color (photos stay inverted for that moment).
+  function standIn(on) {
+    if (on === standing) return;
+    standing = on;
+    root.style.setProperty('filter', on ? 'invert(1) hue-rotate(180deg)' : '', on ? 'important' : '');
+    if (!on && !root.style.length) root.removeAttribute('style');
+    watch.takeRecords(); // our change, not the page switching theme
+  }
 
   function apply() {
     const guess = natural ?? 'light';
-    flipped = want !== 'off' && guess !== want;
-    if (flipped) root.setAttribute('data-shadeflip', canvasOnly ? 'canvas' : '');
-    else root.removeAttribute('data-shadeflip');
+    flipped = want !== 'off' && guess !== want && !!attr;
+    if (flipped) root.setAttribute(attr, canvasOnly ? 'canvas' : '');
+    else if (attr) root.removeAttribute(attr);
+    if (flipped && !css) {
+      css = 'asked';
+      api.runtime.sendMessage({ type: 'css' }).catch(() => false).then((ok) => {
+        css = ok ? 'in' : 'failed'; // failed: the inline filter stays
+        standIn(flipped && !ok);
+      });
+    }
+    standIn(flipped && css !== 'in');
     const look = flipped ? opposite(guess) : guess;
     api.runtime.sendMessage({ type: 'state', host, look, want }).catch(() => {});
   }
@@ -85,7 +112,7 @@
     const look = dark * 2 > points.length ? 'dark' : 'light';
     if (look !== natural) {
       natural = look;
-      if (ownSetting) api.storage.local.set({ [CACHE]: look });
+      if (ownSetting && !isPrivate) api.storage.local.set({ [CACHE]: look });
     }
     apply();
   }
@@ -98,8 +125,13 @@
   const ready = (async () => {
     const [sync, local] = await Promise.all([
       api.storage.sync.get([SITE, 'mode']),
-      api.storage.local.get(CACHE),
+      api.storage.local.get([CACHE, 'attr']),
     ]);
+    attr = local.attr ?? null;
+    // Someone else removed our attribute (e.g. a framework rewrote <html>).
+    if (attr) new MutationObserver(() => {
+      if (flipped && !root.hasAttribute(attr)) apply();
+    }).observe(root, { attributes: true, attributeFilter: [attr] });
     ownSetting = SITE in sync;
     want = sync[SITE] ?? sync.mode ?? 'off';
     natural = local[CACHE] ?? null;
@@ -120,17 +152,13 @@
   else document.addEventListener('DOMContentLoaded', () => document.body && watch.observe(document.body, opts), { once: true });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => later(0));
 
-  // Someone else removed our attribute (e.g. a framework rewrote <html>).
-  new MutationObserver(() => {
-    if (flipped && !root.hasAttribute('data-shadeflip')) apply();
-  }).observe(root, { attributes: true, attributeFilter: ['data-shadeflip'] });
-
   api.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync' || !(SITE in changes || 'mode' in changes)) return;
     api.storage.sync.get([SITE, 'mode']).then((s) => {
       ownSetting = SITE in s;
       if (!ownSetting) api.storage.local.remove(CACHE);
-      else if (natural) api.storage.local.set({ [CACHE]: natural });
+      else if (natural && !isPrivate) api.storage.local.set({ [CACHE]: natural });
+      if (held) return;
       want = s[SITE] ?? s.mode ?? 'off';
       apply();
     });
@@ -144,7 +172,13 @@
       const look = flipped ? opposite(natural ?? 'light') : (natural ?? 'light');
       want = opposite(look);
       apply();
-      api.storage.sync.set({ [SITE]: want });
+      held = isPrivate;
+      if (!isPrivate) {
+        api.storage.sync.set({ [SITE]: want }).catch(() => {
+          // storage.sync holds at most 512 items.
+          api.runtime.sendMessage({ type: 'state', host, want, full: true }).catch(() => {});
+        });
+      }
       sendResponse(want);
     });
     return true; // async response
