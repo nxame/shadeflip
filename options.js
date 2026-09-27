@@ -37,8 +37,12 @@ $('add').onclick = () => {
   let host = $('new-host').value.trim().toLowerCase();
   try { host = new URL(host.includes('://') ? host : 'https://' + host).hostname; } catch { return; }
   if (!host) return;
-  api.storage.sync.set({ ['s:' + host]: $('new-want').value });
-  $('new-host').value = '';
+  api.storage.sync.set({ ['s:' + host]: $('new-want').value }).then(() => {
+    $('new-host').value = '';
+    $('add-error').hidden = true;
+  }, () => {
+    $('add-error').hidden = false;
+  });
 };
 $('new-host').onkeydown = (e) => e.key === 'Enter' && $('add').click();
 

@@ -12,19 +12,47 @@
   const CACHE = 'c:' + host;  // storage.local: last detected natural look, kept
                               // only for sites with their own setting
 
+  // Private window: flips last for the tab, nothing is saved.
+  const isPrivate = !!api.extension?.inIncognitoContext;
+
   let want = 'off';     // what the user asked for on this site
+  let held = false;     // flipped in a private window: ignore saved settings
   let ownSetting = false; // this site has its own entry, not just the default
   let natural = null;   // how the page looks on its own: "dark" | "light"
   let canvasOnly = false;
   let flipped = false;
 
+  // Flip rules key on an attribute name made up fresh for each page load and
+  // are added only to flipped pages, so a page can't probe for Shadeflip with a
+  // known name, and the name can't link visits across sites.
+  const attr = 'data-' + Array.from(crypto.getRandomValues(new Uint8Array(10)), (n) => String.fromCharCode(97 + n % 26)).join('');
+  let css = '';         // flip rules: "" | "asked" | "in"
+  let standing = false;
   const opposite = (look) => (look === 'dark' ? 'light' : 'dark');
+
+  // Until the rules are in, an inline filter stands in so the page never
+  // shows the wrong color (photos stay inverted for that moment).
+  function standIn(on) {
+    if (on === standing) return;
+    standing = on;
+    root.style.setProperty('filter', on ? 'invert(1) hue-rotate(180deg)' : '', on ? 'important' : '');
+    if (!on && !root.style.length) root.removeAttribute('style');
+    watch.takeRecords(); // our change, not the page switching theme
+  }
 
   function apply() {
     const guess = natural ?? 'light';
     flipped = want !== 'off' && guess !== want;
-    if (flipped) root.setAttribute('data-shadeflip', canvasOnly ? 'canvas' : '');
-    else root.removeAttribute('data-shadeflip');
+    if (flipped) root.setAttribute(attr, canvasOnly ? 'canvas' : '');
+    else root.removeAttribute(attr);
+    if (flipped && !css) {
+      css = 'asked';
+      api.runtime.sendMessage({ type: 'css', attr }).catch(() => false).then((ok) => {
+        css = ok ? 'in' : ''; // failed: the inline filter stays, next flip asks again
+        standIn(flipped && !ok);
+      });
+    }
+    standIn(flipped && css !== 'in');
     const look = flipped ? opposite(guess) : guess;
     api.runtime.sendMessage({ type: 'state', host, look, want }).catch(() => {});
   }
@@ -85,7 +113,7 @@
     const look = dark * 2 > points.length ? 'dark' : 'light';
     if (look !== natural) {
       natural = look;
-      if (ownSetting) api.storage.local.set({ [CACHE]: look });
+      if (ownSetting && !isPrivate) api.storage.local.set({ [CACHE]: look });
     }
     apply();
   }
@@ -122,15 +150,16 @@
 
   // Someone else removed our attribute (e.g. a framework rewrote <html>).
   new MutationObserver(() => {
-    if (flipped && !root.hasAttribute('data-shadeflip')) apply();
-  }).observe(root, { attributes: true, attributeFilter: ['data-shadeflip'] });
+    if (flipped && !root.hasAttribute(attr)) apply();
+  }).observe(root, { attributes: true, attributeFilter: [attr] });
 
   api.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync' || !(SITE in changes || 'mode' in changes)) return;
     api.storage.sync.get([SITE, 'mode']).then((s) => {
       ownSetting = SITE in s;
       if (!ownSetting) api.storage.local.remove(CACHE);
-      else if (natural) api.storage.local.set({ [CACHE]: natural });
+      else if (natural && !isPrivate) api.storage.local.set({ [CACHE]: natural });
+      if (held) return;
       want = s[SITE] ?? s.mode ?? 'off';
       apply();
     });
@@ -144,7 +173,13 @@
       const look = flipped ? opposite(natural ?? 'light') : (natural ?? 'light');
       want = opposite(look);
       apply();
-      api.storage.sync.set({ [SITE]: want });
+      held = isPrivate;
+      if (!isPrivate) {
+        api.storage.sync.set({ [SITE]: want }).catch(() => {
+          // Full list (512 items) or too many changes a minute.
+          api.runtime.sendMessage({ type: 'state', host, want, unsaved: true }).catch(() => {});
+        });
+      }
       sendResponse(want);
     });
     return true; // async response
