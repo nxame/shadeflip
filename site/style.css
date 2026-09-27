@@ -26,6 +26,7 @@ body {
 main, header, footer { max-width: 42rem; margin: 0 auto; padding: 0 1rem; }
 header { display: flex; align-items: center; justify-content: space-between; padding-top: 1.5rem; }
 header a { color: var(--fg); text-decoration: none; font-weight: 600; }
+.brand { display: inline-flex; align-items: center; gap: .5rem; }
 nav a { color: var(--muted); font-weight: 400; margin-left: 1rem; }
 h1 { font-size: 2.2rem; line-height: 1.2; margin: 3rem 0 .75rem; letter-spacing: -.02em; }
 h2 { font-size: 1.2rem; margin: 2.25rem 0 .5rem; }
@@ -52,6 +53,9 @@ kbd {
 .flip .d { background: #1d1d1f; color: #ececef; }
 .flip b { display: block; margin-bottom: .25rem; }
 ul { padding-left: 1.2rem; }
+figure { margin: 1.5rem 0; }
+figure img { display: block; width: 100%; height: auto; }
+figcaption { color: var(--muted); font-size: .9rem; margin-top: .5rem; }
 footer { color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); margin-top: 4rem; padding-top: 1rem; padding-bottom: 2rem; }
 footer a { color: var(--muted); margin-right: 1rem; }
 footer p { color: var(--muted); margin: .75rem 0 0; }
