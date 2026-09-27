@@ -1,4 +1,4 @@
-/* Added to flipped pages only; background.js renames data-shadeflip per install. */
+/* Added to flipped pages only; background.js renames data-shadeflip per page. */
 html[data-shadeflip] {
   filter: invert(1) hue-rotate(180deg) !important;
 }
