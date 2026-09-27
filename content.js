@@ -9,9 +9,11 @@
   if (!host || !root) return;
 
   const SITE = 's:' + host;   // storage.sync: "dark" | "light" | "off"
-  const CACHE = 'c:' + host;  // storage.local: last detected natural look
+  const CACHE = 'c:' + host;  // storage.local: last detected natural look, kept
+                              // only for sites with their own setting
 
   let want = 'off';     // what the user asked for on this site
+  let ownSetting = false; // this site has its own entry, not just the default
   let natural = null;   // how the page looks on its own: "dark" | "light"
   let canvasOnly = false;
   let flipped = false;
@@ -83,7 +85,7 @@
     const look = dark * 2 > points.length ? 'dark' : 'light';
     if (look !== natural) {
       natural = look;
-      api.storage.local.set({ [CACHE]: look });
+      if (ownSetting) api.storage.local.set({ [CACHE]: look });
     }
     apply();
   }
@@ -98,6 +100,7 @@
       api.storage.sync.get([SITE, 'mode']),
       api.storage.local.get(CACHE),
     ]);
+    ownSetting = SITE in sync;
     want = sync[SITE] ?? sync.mode ?? 'off';
     natural = local[CACHE] ?? null;
     apply(); // early, from cache, to avoid a flash before the page renders
@@ -125,6 +128,9 @@
   api.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync' || !(SITE in changes || 'mode' in changes)) return;
     api.storage.sync.get([SITE, 'mode']).then((s) => {
+      ownSetting = SITE in s;
+      if (!ownSetting) api.storage.local.remove(CACHE);
+      else if (natural) api.storage.local.set({ [CACHE]: natural });
       want = s[SITE] ?? s.mode ?? 'off';
       apply();
     });

@@ -29,8 +29,14 @@ api.runtime.onMessage.addListener((msg, sender) => {
   });
 });
 
-// Firefox has no "Options" item on the toolbar button's menu; add one.
-api.runtime.onInstalled.addListener(() => {
+api.runtime.onInstalled.addListener(async () => {
+  // Brightness notes are kept only for sites with their own setting. Drop
+  // any that earlier versions saved for every site visited.
+  const [sync, local] = await Promise.all([api.storage.sync.get(null), api.storage.local.get(null)]);
+  const stale = Object.keys(local).filter((k) => k.startsWith('c:') && !(('s:' + k.slice(2)) in sync));
+  if (stale.length) api.storage.local.remove(stale);
+
+  // Firefox has no "Options" item on the toolbar button's menu; add one.
   if (!globalThis.browser) return;
   api.contextMenus.create({ id: 'options', title: 'Shadeflip settings', contexts: ['action'] });
 });
