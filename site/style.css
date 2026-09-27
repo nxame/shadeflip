@@ -54,3 +54,5 @@ kbd {
 ul { padding-left: 1.2rem; }
 footer { color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); margin-top: 4rem; padding-top: 1rem; padding-bottom: 2rem; }
 footer a { color: var(--muted); margin-right: 1rem; }
+footer p { color: var(--muted); margin: .75rem 0 0; }
+footer p a { margin-right: 0; }
