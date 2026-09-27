@@ -16,7 +16,10 @@ async function render() {
   const rows = Object.keys(all).filter((k) => k.startsWith('s:')).sort().map((key) => {
     const tr = document.createElement('tr');
     const remove = Object.assign(document.createElement('button'), { textContent: 'Remove' });
-    remove.onclick = () => api.storage.sync.remove(key);
+    remove.onclick = () => {
+      api.storage.sync.remove(key);
+      api.storage.local.remove('c:' + key.slice(2));
+    };
     tr.append(document.createElement('td'), document.createElement('td'), document.createElement('td'));
     tr.cells[0].textContent = key.slice(2);
     tr.cells[1].append(select(all[key], (v) => api.storage.sync.set({ [key]: v })));
