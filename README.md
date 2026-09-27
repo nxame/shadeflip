@@ -65,5 +65,6 @@ tab page), so the button does nothing there.
 | `icons/` | Toolbar and store icons (`icon.svg` is the source) |
 
 Settings live in `storage.sync` (one key per site, `s:<hostname>`, plus
-`mode`); the last detected brightness of each site is cached in
-`storage.local` so the flip can be applied before the page finishes loading.
+`mode`); for sites with their own setting, the last detected brightness is
+cached in `storage.local` so the flip can be applied before the page finishes
+loading. Sites without a setting leave nothing behind.
