@@ -77,7 +77,7 @@ tab page), so the button does nothing there.
 |---|---|
 | `manifest.json` | Manifest V3, shared by Firefox and Chromium browsers |
 | `content.js` | Detects page brightness, applies the saved choice, handles flips |
-| `flip.css` | The invert filter, active only while `<html data-shadeflip>` is set (the attribute name is swapped for a random one per install) |
+| `flip.css` | The invert filter, active only while `<html data-shadeflip>` is set (the attribute name is swapped for a random one on each page load) |
 | `background.js` | Toolbar click and shortcut, toolbar tooltip, adds `flip.css` to pages being flipped |
 | `options.html`, `options.js` | Settings page |
 | `icons/` | Toolbar and store icons (`icon.svg` is the source) |
@@ -89,7 +89,7 @@ loading. Sites without a setting leave nothing behind. Flips made in
 private windows last for the tab and are never saved.
 
 `flip.css` isn't added to every page. When a page needs flipping, the content
-script sets a random per-install attribute on `<html>` (kept in
-`storage.local` as `attr`) and asks the background to add the flip rules with
-that name. Until they land, an inline filter stands in so the page doesn't
-flash. This keeps pages from detecting Shadeflip by setting a known attribute.
+script makes up a random attribute name for that page load, sets it on
+`<html>` and asks the background to add the flip rules with that name. Until they land, an inline filter stands in so the page doesn't
+flash. This keeps pages from detecting Shadeflip by setting a known attribute, and a
+new name per page means the name can't link visits across sites.

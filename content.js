@@ -22,10 +22,11 @@
   let canvasOnly = false;
   let flipped = false;
 
-  // Flip rules key on a random per-install attribute name and are added only
-  // to flipped pages, so a page can't probe for Shadeflip with a known name.
-  let attr = null;
-  let css = '';         // flip rules: "" | "asked" | "in" | "failed"
+  // Flip rules key on an attribute name made up fresh for each page load and
+  // are added only to flipped pages, so a page can't probe for Shadeflip with a
+  // known name, and the name can't link visits across sites.
+  const attr = 'data-' + Array.from(crypto.getRandomValues(new Uint8Array(10)), (n) => String.fromCharCode(97 + n % 26)).join('');
+  let css = '';         // flip rules: "" | "asked" | "in"
   let standing = false;
   const opposite = (look) => (look === 'dark' ? 'light' : 'dark');
 
@@ -41,13 +42,13 @@
 
   function apply() {
     const guess = natural ?? 'light';
-    flipped = want !== 'off' && guess !== want && !!attr;
+    flipped = want !== 'off' && guess !== want;
     if (flipped) root.setAttribute(attr, canvasOnly ? 'canvas' : '');
-    else if (attr) root.removeAttribute(attr);
+    else root.removeAttribute(attr);
     if (flipped && !css) {
       css = 'asked';
-      api.runtime.sendMessage({ type: 'css' }).catch(() => false).then((ok) => {
-        css = ok ? 'in' : 'failed'; // failed: the inline filter stays
+      api.runtime.sendMessage({ type: 'css', attr }).catch(() => false).then((ok) => {
+        css = ok ? 'in' : ''; // failed: the inline filter stays, next flip asks again
         standIn(flipped && !ok);
       });
     }
@@ -125,13 +126,8 @@
   const ready = (async () => {
     const [sync, local] = await Promise.all([
       api.storage.sync.get([SITE, 'mode']),
-      api.storage.local.get([CACHE, 'attr']),
+      api.storage.local.get(CACHE),
     ]);
-    attr = local.attr ?? null;
-    // Someone else removed our attribute (e.g. a framework rewrote <html>).
-    if (attr) new MutationObserver(() => {
-      if (flipped && !root.hasAttribute(attr)) apply();
-    }).observe(root, { attributes: true, attributeFilter: [attr] });
     ownSetting = SITE in sync;
     want = sync[SITE] ?? sync.mode ?? 'off';
     natural = local[CACHE] ?? null;
@@ -151,6 +147,11 @@
   if (document.body) watch.observe(document.body, opts);
   else document.addEventListener('DOMContentLoaded', () => document.body && watch.observe(document.body, opts), { once: true });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => later(0));
+
+  // Someone else removed our attribute (e.g. a framework rewrote <html>).
+  new MutationObserver(() => {
+    if (flipped && !root.hasAttribute(attr)) apply();
+  }).observe(root, { attributes: true, attributeFilter: [attr] });
 
   api.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync' || !(SITE in changes || 'mode' in changes)) return;
@@ -175,8 +176,8 @@
       held = isPrivate;
       if (!isPrivate) {
         api.storage.sync.set({ [SITE]: want }).catch(() => {
-          // storage.sync holds at most 512 items.
-          api.runtime.sendMessage({ type: 'state', host, want, full: true }).catch(() => {});
+          // Full list (512 items) or too many changes a minute.
+          api.runtime.sendMessage({ type: 'state', host, want, unsaved: true }).catch(() => {});
         });
       }
       sendResponse(want);
