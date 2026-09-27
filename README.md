@@ -30,6 +30,24 @@ Right-click the toolbar button and choose **Options** (Chrome) or
 - **Shortcut:** a link to change it. Dark Reader uses the same default
   shortcut, so turn Dark Reader off or rebind one of them.
 
+## Install
+
+- **Firefox (desktop and Android):** from Firefox Add-ons, once the listing is live.
+- **Any browser, manually:** download `shadeflip-<version>.zip` from
+  [Releases](https://github.com/nxame/shadeflip/releases), unzip it, and follow
+  the steps below.
+
+## Releasing
+
+Bump `version` in `manifest.json`, merge to `main`, then push a matching tag:
+
+```sh
+git tag v1.0.2 && git push origin v1.0.2
+```
+
+The Release workflow lints the extension, builds `shadeflip-<version>.zip` and
+publishes a GitHub Release with it. Upload the same zip to Firefox Add-ons.
+
 ## Try it locally
 
 ### Firefox (140 or newer)
