@@ -1,0 +1,18 @@
+/* Shadeflip: applied only while <html data-shadeflip> is set. */
+html[data-shadeflip] {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+/* Page had no background at all: paint the default one so it flips too. */
+html[data-shadeflip="canvas"] {
+  background-color: Canvas !important;
+}
+/* Flip media back so photos and video look normal. */
+html[data-shadeflip] :is(img, video, canvas, iframe, embed, object, svg image, [style*="background-image"]) {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+/* ...but not twice when nested inside something already flipped back. */
+html[data-shadeflip] :is([style*="background-image"], iframe, object) :is(img, video, canvas, iframe, embed, object, svg image, [style*="background-image"]),
+html[data-shadeflip] :fullscreen,
+html[data-shadeflip] :fullscreen :is(img, video, canvas) {
+  filter: none !important;
+}
