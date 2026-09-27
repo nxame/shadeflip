@@ -4,8 +4,8 @@ Dark or Light, remembered per site. Click the toolbar button (or press
 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>, <kbd>⌥⇧D</kbd> on a Mac) and the
 current site flips. Every other site stays exactly as it was.
 
-- **Per site.** Each exact hostname keeps its own choice (`mail.google.com` and
-  `docs.google.com` are separate).
+- **Per site.** Each exact hostname keeps its own choice (`mail.example.com` and
+  `news.example.com` are separate).
 - **Leaves matching sites alone.** If a site is already dark and you asked for
   Dark, nothing happens.
 - **Tiny.** About 17 KB, plain JavaScript, no dependencies, no build step, no
