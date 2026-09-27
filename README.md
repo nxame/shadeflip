@@ -8,7 +8,7 @@ current site flips. Every other site stays exactly as it was.
   `news.example.com` are separate).
 - **Leaves matching sites alone.** If a site is already dark and you asked for
   Dark, nothing happens.
-- **Tiny.** About 17 KB, plain JavaScript, no dependencies, no build step, no
+- **Tiny.** Under 20 KB, plain JavaScript, no dependencies, no build step, no
   tracking, no popups, no nagging.
 
 ## How it works
@@ -59,12 +59,19 @@ tab page), so the button does nothing there.
 |---|---|
 | `manifest.json` | Manifest V3, shared by Firefox and Chromium browsers |
 | `content.js` | Detects page brightness, applies the saved choice, handles flips |
-| `flip.css` | The invert filter, active only while `<html data-shadeflip>` is set |
-| `background.js` | Toolbar click and shortcut, toolbar tooltip |
+| `flip.css` | The invert filter, active only while `<html data-shadeflip>` is set (the attribute name is swapped for a random one per install) |
+| `background.js` | Toolbar click and shortcut, toolbar tooltip, adds `flip.css` to pages being flipped |
 | `options.html`, `options.js` | Settings page |
 | `icons/` | Toolbar and store icons (`icon.svg` is the source) |
 
 Settings live in `storage.sync` (one key per site, `s:<hostname>`, plus
 `mode`); for sites with their own setting, the last detected brightness is
 cached in `storage.local` so the flip can be applied before the page finishes
-loading. Sites without a setting leave nothing behind.
+loading. Sites without a setting leave nothing behind. Flips made in
+private windows last for the tab and are never saved.
+
+`flip.css` isn't added to every page. When a page needs flipping, the content
+script sets a random per-install attribute on `<html>` (kept in
+`storage.local` as `attr`) and asks the background to add the flip rules with
+that name. Until they land, an inline filter stands in so the page doesn't
+flash. This keeps pages from detecting Shadeflip by setting a known attribute.
