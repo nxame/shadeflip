@@ -28,6 +28,8 @@ header { display: flex; align-items: center; justify-content: space-between; pad
 header a { color: var(--fg); text-decoration: none; font-weight: 600; }
 .brand { display: inline-flex; align-items: center; gap: .5rem; }
 nav a { color: var(--muted); font-weight: 400; margin-left: 1rem; }
+nav a { white-space: nowrap; }
+@media (max-width: 440px) { header { flex-wrap: wrap; gap: .5rem; } nav a { margin: 0 1rem 0 0; } }
 h1 { font-size: 2.2rem; line-height: 1.2; margin: 3rem 0 .75rem; letter-spacing: -.02em; }
 h2 { font-size: 1.2rem; margin: 2.25rem 0 .5rem; }
 p, li { color: var(--fg); }
@@ -57,6 +59,6 @@ figure { margin: 1.5rem 0; }
 figure img { display: block; width: 100%; height: auto; }
 figcaption { color: var(--muted); font-size: .9rem; margin-top: .5rem; }
 footer { color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); margin-top: 4rem; padding-top: 1rem; padding-bottom: 2rem; }
-footer a { color: var(--muted); margin-right: 1rem; }
+footer a { color: var(--muted); margin-right: 1rem; display: inline-block; }
 footer p { color: var(--muted); margin: .75rem 0 0; }
-footer p a { margin-right: 0; }
+footer p a { margin-right: 0; display: inline; }
