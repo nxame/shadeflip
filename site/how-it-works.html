@@ -34,31 +34,31 @@
 </header>
 <main>
 <h1>How it works, and why it's safe</h1>
-<p class="lede">Shadeflip is small enough to read in one sitting. This page is for anyone who wants to know exactly what it does before trusting it.</p>
+<p class="lede">Shadeflip is small enough to read in one sitting. This page describes what it changes on a site, what it saves, and what it uses each browser permission for.</p>
 
-<h2>At a glance</h2>
+<h2>Summary</h2>
 <ul>
-  <li><b>Tiny.</b> Under 20 KB in total, icons included. Plain JavaScript and CSS, no libraries, no build step. What you install is the source code as written.</li>
-  <li><b>No network.</b> It never contacts a server. No analytics, no ads, no update checks of its own, no code loaded from anywhere.</li>
-  <li><b>No tracking.</b> It keeps no history and leaves no fixed marker a website could use to spot it or follow you.</li>
-  <li><b>Open.</b> Every line is on <a href="https://github.com/nxame/shadeflip">GitHub</a> under the BSD 3-Clause License.</li>
+  <li><b>Size:</b> under 20 KB in total, icons included. The code is plain JavaScript and CSS with no libraries and no build step, so what you install is the source code as written.</li>
+  <li><b>Network:</b> Shadeflip never contacts a server. It has no analytics or ads, doesn't check for updates itself, and doesn't load code from anywhere else. Your browser handles updates through the store.</li>
+  <li><b>Tracking:</b> Shadeflip keeps no history. It also doesn't leave a fixed marker on pages, so a website can't use it to recognize you or follow you.</li>
+  <li><b>License:</b> the full source is on <a href="https://github.com/nxame/shadeflip">GitHub</a> under the BSD 3-Clause License.</li>
 </ul>
 
 <h2>What happens when you flip a site</h2>
 <ol>
   <li>You click the toolbar button or press <span class="alt-key"><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd></span>.</li>
-  <li>Shadeflip checks the page's background at a few points on screen to tell whether it already looks dark or light. This runs on your device and looks only at colors, never at text.</li>
-  <li>If the page should change, the browser inverts its colors with a single CSS filter, then turns photos, video and embeds back so they keep their real colors. The page's own code and styles are left untouched.</li>
-  <li>Your choice is saved for that exact address, such as example.com, and applied the next time it loads, before the page is shown. Other sites, including mail.example.com, are not affected.</li>
+  <li>Shadeflip checks the page's background at a few points on screen to tell whether it already looks dark or light. The check runs on your device and reads background colors only. It doesn't read the page's text.</li>
+  <li>If the page needs to change, Shadeflip adds a single CSS filter that inverts its colors, then inverts photos, video and embeds again so they keep their real colors. Shadeflip doesn't modify the page's code or stylesheets.</li>
+  <li>Shadeflip saves your choice for that exact address, such as example.com, and applies it the next time the site loads, before the page appears. The setting doesn't apply to other addresses, including mail.example.com.</li>
 </ol>
 <p>If you ask for dark and the site is already dark, Shadeflip does nothing. If a site switches its own theme later, Shadeflip notices and adjusts.</p>
 
 <h2>What it stores</h2>
-<p>Only the sites you've set, each with dark, light or off, plus your default for all sites. For those sites it also notes whether the page looked dark or light last time, so the right color shows while it loads. Sites you only visit are never saved.</p>
-<p>Settings live in your browser's extension storage. If you use your browser's own sync, the browser may copy them to your other devices; Shadeflip itself never sends them anywhere. In private windows, a site you flip stays flipped until you close the tab and nothing is saved.</p>
+<p>Shadeflip stores your default for all sites and a list of the sites you've set, each marked dark, light or off. For each site on that list, it also notes whether the page looked dark or light last time, so the right color shows while the page loads. Shadeflip doesn't save sites that you visit but haven't set.</p>
+<p>Your browser keeps your settings in its extension storage. If you use your browser's own sync, the browser may copy them to your other devices; Shadeflip itself never sends them anywhere. In a private window, a site you flip stays flipped until you close the tab, and Shadeflip saves nothing.</p>
 
 <h2>Why websites can't track you through it</h2>
-<p>To flip a page, Shadeflip marks it with an attribute. Its name is random, made up fresh on every page load and never stored, and the flip rules are added only to pages you've flipped. A site can't look for a known Shadeflip name, and nothing Shadeflip adds is the same on two sites or two visits, so it can't be used to link your visits together.</p>
+<p>To flip a page, Shadeflip marks it with an attribute. The attribute's name is random: Shadeflip makes up a new one on every page load and never stores it. Shadeflip also adds its CSS rules only to pages you've flipped. As a result, a site has no known name to look for, and because nothing Shadeflip adds is the same on two sites or two visits, no site can use it to link your visits together.</p>
 
 <h2>What each permission is for</h2>
 <ul>
@@ -70,17 +70,17 @@
 <p>It doesn't ask for your history, tabs list, downloads, cookies or network traffic.</p>
 
 <h2>Check it yourself</h2>
-<p>The whole extension is six small files: <code>manifest.json</code>, <code>content.js</code>, <code>background.js</code>, <code>flip.css</code>, <code>options.html</code> and <code>options.js</code>. Read them on <a href="https://github.com/nxame/shadeflip">GitHub</a>, or compare them with the files your browser installed. Found a problem? <a href="https://github.com/nxame/shadeflip/issues">Open an issue</a>. See also the <a href="/privacy.html">privacy policy</a>.</p>
+<p>The whole extension is six small files: <code>manifest.json</code>, <code>content.js</code>, <code>background.js</code>, <code>flip.css</code>, <code>options.html</code> and <code>options.js</code>. Read them on <a href="https://github.com/nxame/shadeflip">GitHub</a>, or compare them with the files your browser installed. If you find a problem, <a href="https://github.com/nxame/shadeflip/issues">open an issue</a>. See also the <a href="/privacy.html">privacy policy</a>.</p>
 </main>
 <footer>
   <ul>
     <li><a href="/">Home</a></li>
-    <li><a href="/how-it-works.html">How it works</a></li>
+    <li><a href="/how-it-works.html" aria-current="page">How it works</a></li>
     <li><a href="/privacy.html">Privacy</a></li>
     <li><a href="/support.html">Support</a></li>
     <li><a href="https://github.com/nxame/shadeflip">Source</a></li>
   </ul>
-  <p>A project by <a href="https://x.com/theadriannoel">@theadriannoel</a>. © 2026 Adrian Noel. Open source under the <a href="https://github.com/nxame/shadeflip/blob/main/LICENSE">BSD 3-Clause License</a>.</p>
+  <p>A project by <a href="https://x.com/theadriannoel">@theadriannoel</a>. © 2026 <a href="https://nxa.me">Adrian Noel</a>. Open source under the <a href="https://github.com/nxame/shadeflip/blob/main/LICENSE">BSD 3-Clause License</a>.</p>
 </footer>
 <script src="/keys.js"></script>
 </body>

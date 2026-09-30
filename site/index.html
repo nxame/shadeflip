@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shadeflip: per-site dark mode for Firefox and Chrome</title>
-<meta name="description" content="Shadeflip is a free, tiny dark mode extension for Firefox and Chrome. Click once to turn the site you're on dark or light, and it remembers that choice for that site only.">
+<meta name="description" content="Shadeflip is a free dark mode extension for Firefox and Chrome. Click its button to turn the site you're on dark or light, and Shadeflip saves the setting for that site.">
 <link rel="canonical" href="https://shadeflip.com/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Shadeflip">
 <meta property="og:title" content="Shadeflip: per-site dark mode for Firefox and Chrome">
-<meta property="og:description" content="Shadeflip is a free, tiny dark mode extension for Firefox and Chrome. Click once to turn the site you're on dark or light, and it remembers that choice for that site only.">
+<meta property="og:description" content="Shadeflip is a free dark mode extension for Firefox and Chrome. Click its button to turn the site you're on dark or light, and Shadeflip saves the setting for that site.">
 <meta property="og:url" content="https://shadeflip.com/">
 <meta property="og:image" content="https://shadeflip.com/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,12 +21,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Shadeflip","url":"https://shadeflip.com/","image":"https://shadeflip.com/og.png","description":"A tiny browser extension that turns the site you're on dark or light and remembers that choice for that site only.","applicationCategory":"BrowserApplication","operatingSystem":"Firefox, Chrome, Edge, Brave","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"installUrl":"https://chromewebstore.google.com/detail/shadeflip/nbdfmpknchaboakjefemnlkfffjohkjk","license":"https://opensource.org/licenses/BSD-3-Clause"}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Shadeflip","url":"https://shadeflip.com/","image":"https://shadeflip.com/og.png","description":"A small browser extension that turns the site you're on dark or light and saves the setting for that site.","applicationCategory":"BrowserApplication","operatingSystem":"Firefox, Chrome, Edge, Brave","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"installUrl":"https://chromewebstore.google.com/detail/shadeflip/nbdfmpknchaboakjefemnlkfffjohkjk","license":"https://opensource.org/licenses/BSD-3-Clause"}
 </script>
 </head>
 <body>
 <header>
-  <a href="/" class="brand"><img src="/favicon.svg" alt="" width="24" height="24">Shadeflip</a>
+  <a href="/" class="brand"><img src="/favicon.svg" alt="Shadeflip logo" width="24" height="24">Shadeflip</a>
   <nav>
     <ol>
       <li><a href="/how-it-works.html">How it works</a></li>
@@ -36,12 +36,13 @@
   </nav>
 </header>
 <main>
-<h1>Dark mode, one site at a time.</h1>
-<p class="lede">Shadeflip is a tiny dark mode extension for Firefox and Chrome. Click it, and the site you're on switches from light to dark, or back again. Shadeflip remembers your choice for that site and leaves every other site alone.</p>
+<h1>Dark mode for the sites you choose</h1>
+<p class="lede">Shadeflip is a free, small extension for Firefox and Chromium browsers. Click the extension button <img src="/favicon.svg" alt="Shadeflip toggle button" width="24" height="24"> to switch the site you're on between light and dark.</p>
+<p>It saves the setting for that site, so that site looks the same the next time you visit. Other sites keep their usual colors.</p>
 
 <div class="flip" aria-hidden="true">
-  <div class="l"><b>example.com</b>The site in its own colors.</div>
-  <div class="d"><b>example.com</b>Dark after one click, and next visit too.</div>
+  <div class="l"><b>example.com</b>Before: the site's normal colors.</div>
+  <div class="d"><b>example.com</b>After one click. It stays this way on your next visit.</div>
 </div>
 
 <h2>Get it</h2>
@@ -54,44 +55,40 @@
   </a>
   <span class="pending">Firefox approval pending</span>
 </p>
-<p>Edge, Brave and other Chromium browsers can install it from the Chrome Web Store too.</p>
-<p>Shadeflip is still waiting for review in the Firefox store. Until then, Firefox users can install it from GitHub. The <a href="https://github.com/nxame/shadeflip#try-it-locally">install steps</a> take a couple of minutes.</p>
+<p>Use the Chrome Web Store for Chrome, Edge, Brave and other Chromium browsers. Until Mozilla approves the Firefox version, you can install it in Firefox from GitHub by following these <a href="https://github.com/nxame/shadeflip#try-it-locally">install steps</a>, which take a couple of minutes.</p>
 
 <h2>How it works</h2>
 <ul>
-  <li>Click the Shadeflip button in your toolbar, or press <span class="alt-key"><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd></span>.</li>
-  <li>Shadeflip remembers the choice for that site. Every other site stays as it was.</li>
-  <li>It checks a page before changing it. If you asked for dark and the site is already dark, Shadeflip does nothing.</li>
-  <li>To use dark on most sites, make it the default in settings, then switch back the few sites that look better light.</li>
+  <li>The Shadeflip button is in your browser toolbar. Instead of clicking it, you can also press <span class="alt-key"><kbd>Alt/Opt</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd></span>.</li>
+  <li>Before it changes anything, the extension checks the page. If you asked for dark and the site is already dark, it leaves the page as it is.</li>
+  <li>If you want dark on most sites, set dark as the default in settings. Then switch back the few sites that look better light.</li>
 </ul>
-<p>Works in Firefox, Chrome, Edge, Brave and other Chromium browsers.</p>
 
-<h2>Why Shadeflip</h2>
-<p>Many dark mode extensions switch every site at once, and some ask for donations. Shadeflip changes only the sites you pick and never asks for money.</p>
-<p>It darkens a page by inverting its colors, then turns photos and video back to normal. That's fast and works on almost any site, though some colors can shift.</p>
+<h2>How it darkens a page</h2>
+<p>Shadeflip inverts the page's colors and then inverts photos and video a second time, which puts them back to their real colors. This is fast and works on almost any site. The trade-off is that some colors, such as a brand's blue or orange, can come out slightly different.</p>
 <figure>
   <img src="/screenshot.png" width="1200" height="460" loading="lazy" alt="The same example.com article twice: in its normal light colors, and after Shadeflip turns it dark. The photo keeps its real colors in both.">
-  <figcaption>The same page before and after. Photos keep their real colors.</figcaption>
+  <figcaption>The same article before and after Shadeflip.</figcaption>
 </figure>
 
-<h2>Nothing leaves your browser</h2>
-<p>No accounts, no analytics, no network requests. Your settings stay in your browser. <a href="/privacy.html">Read the privacy policy</a>.</p>
+<h2>Privacy</h2>
+<p>You dot no need any account to sign up or login for, and the extension doesn't collect analytics or make network requests. Your settings stay in your browser.</p>
 <ul>
-  <li>Under 20 KB of plain, open source code, with no libraries and no code loaded from anywhere.</li>
-  <li>Only the sites you set are saved. Private windows save nothing.</li>
-  <li>No fixed marker on the page, so websites can't use Shadeflip to spot or follow you.</li>
+  <li>The extension is under 20 KB of open source JavaScript and CSS. It uses no libraries and doesn't load code from anywhere else.</li>
+  <li>It saves only the sites you've set, and nothing in a private window.</li>
+  <li>It doesn't leave a fixed marker on the page, so a website can't use it to recognize you or follow you between sites.</li>
 </ul>
-<p>Want the details? See <a href="/how-it-works.html">how it works and why it's safe</a>.</p>
+<p>For the details, see <a href="/how-it-works.html">how it works and why it's safe</a> and the <a href="/privacy.html">privacy policy</a>.</p>
 </main>
 <footer>
   <ul>
-    <li><a href="/">Home</a></li>
+    <li><a href="/" aria-current="page">Home</a></li>
     <li><a href="/how-it-works.html">How it works</a></li>
     <li><a href="/privacy.html">Privacy</a></li>
     <li><a href="/support.html">Support</a></li>
     <li><a href="https://github.com/nxame/shadeflip">Source</a></li>
   </ul>
-  <p>A project by <a href="https://x.com/theadriannoel">@theadriannoel</a>. © 2026 Adrian Noel. Open source under the <a href="https://github.com/nxame/shadeflip/blob/main/LICENSE">BSD 3-Clause License</a>.</p>
+  <p>A project by <a href="https://x.com/theadriannoel">@theadriannoel</a>. © 2026 <a href="https://nxa.me">Adrian Noel</a>. Open source under the <a href="https://github.com/nxame/shadeflip/blob/main/LICENSE">BSD 3-Clause License</a>.</p>
 </footer>
 <script src="/keys.js"></script>
 </body>
