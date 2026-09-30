@@ -32,7 +32,10 @@ Right-click the toolbar button and choose **Options** (Chrome) or
 
 ## Install
 
-- **Firefox (desktop and Android):** from Firefox Add-ons, once the listing is live.
+- **Chrome, Edge, Brave and other Chromium browsers:** from the
+  [Chrome Web Store](https://chromewebstore.google.com/detail/shadeflip/nbdfmpknchaboakjefemnlkfffjohkjk).
+- **Firefox (desktop and Android):** from Firefox Add-ons, once the listing is
+  approved.
 - **Any browser, manually:** download `shadeflip-<version>.zip` from
   [Releases](https://github.com/nxame/shadeflip/releases), unzip it, and follow
   the steps below.
@@ -46,7 +49,7 @@ git tag v1.0.2 && git push origin v1.0.2
 ```
 
 The Release workflow lints the extension, builds `shadeflip-<version>.zip` and
-publishes a GitHub Release with it. Upload the same zip to Firefox Add-ons.
+publishes a GitHub Release with it. Upload the same zip to Firefox Add-ons and the Chrome Web Store.
 
 ## Try it locally
 

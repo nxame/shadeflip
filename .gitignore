@@ -1,1 +1,64 @@
+# Files and folders git should never track for this extension.
+# Anything shipped to users lives at the repo root (manifest.json, *.js,
+# flip.css, options.html, icons/) or in site/, so none of it matches below.
+
+# --- Operating system clutter ---
+# macOS folder metadata and resource forks
 .DS_Store
+._*
+# Windows thumbnail and folder settings
+Thumbs.db
+desktop.ini
+
+# --- Editors and local tools ---
+# Per-user editor settings
+.vscode/
+.idea/
+# Vim swap files and backup files
+*.swp
+*~
+# Serena code-assistant cache
+.serena
+
+# --- Node tooling ---
+# Only relevant if a build step or a local web-ext install gets added;
+# the release workflow runs web-ext through npx without a package.json.
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Packaged builds ---
+# Output of `web-ext build`
+web-ext-artifacts/
+# Common build output folders
+dist/
+build/
+# Store packages: the release zip (built by .github/workflows/release.yml),
+# signed Firefox packages and Chrome packages
+*.zip
+*.xpi
+*.crx
+
+# --- Signing keys and store credentials ---
+# Private key Chrome creates when packing a .crx. Losing it means the
+# extension ID changes, and leaking it lets others publish as you.
+*.pem
+# API keys for the Chrome Web Store, Firefox Add-ons (AMO) or Edge uploads
+.env
+.env.*
+# Upload ID that `web-ext sign` saves between runs
+.amo-upload-uuid
+
+# --- Browser profiles used for testing ---
+# Throwaway profiles for `web-ext run --profile-create-if-missing`
+.profile/
+profiles/
+
+# --- Safari ---
+# Per-user state in the Xcode project that
+# `xcrun safari-web-extension-converter` generates
+xcuserdata/
+*.xcuserstate
+# Xcode build output, if it ends up inside the repo
+DerivedData/
