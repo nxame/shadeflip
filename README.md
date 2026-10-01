@@ -34,8 +34,8 @@ Right-click the toolbar button and choose **Options** (Chrome) or
 
 - **Chrome, Edge, Brave and other Chromium browsers:** from the
   [Chrome Web Store](https://chromewebstore.google.com/detail/shadeflip/nbdfmpknchaboakjefemnlkfffjohkjk).
-- **Firefox (desktop and Android):** from Firefox Add-ons, once the listing is
-  approved.
+- **Firefox (desktop and Android):** from
+  [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/shadeflip/).
 - **Any browser, manually:** download `shadeflip-<version>.zip` from
   [Releases](https://github.com/nxame/shadeflip/releases), unzip it, and follow
   the steps below.
